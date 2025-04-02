@@ -1,7 +1,13 @@
 import requests
 from bs4 import BeautifulSoup
 from .models import Article
-from django.http import JsonResponse, HttpResponse
+from .serializers import ArticleSerializer
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import status
+
+
+
  
 def scrape_ai_news():
     url = "https://www.khaleejtimes.com/search?q=AI"  # AI-related news search
@@ -22,16 +28,17 @@ def scrape_ai_news():
     else:
         print("Scraping News Failed")
 
-
+@api_view(['GET', 'POST'])
 def search_articles(request):
     query = request.GET.get('q', '')
     data = []
     if query:
-        results = Article.objects.filter(title__icontains=query)
+        articles = Article.objects.filter(title__icontains=query)
     else:
-        results = Article.objects.all()
-    if results:
-        data = [{"title": result.title, "link": result.link} for result in results]
-    return HttpResponse(data)
+        articles = Article.objects.all()
+    if articles:
+        data = [{"title": article.title, "link": article.link} for article in articles]
+    serializer = ArticleSerializer(articles, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
     
             
