@@ -5,6 +5,5 @@
    b. python manage.py migrate
 4. Run the server
    a. python manage.py runserver
-5. Visit
-   a. http://localhost:8000/news/search -> Retrieve all AI related news
-   b. http://localhost:8000/news/search/?q="search-keyword") -> Search with keyword
+5. Visit http://localhost:8000/news/search -> Retrieve all AI related news
+6. Visit http://localhost:8000/news/search/?q="search-keyword") -> Search with keyword
